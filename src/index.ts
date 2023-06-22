@@ -13,7 +13,17 @@ const videos = [{
   createdAt: new Date().toISOString(),
   publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
   availableResolutions: ["P144"]
-}]
+}, {
+  id: +(new Date()),
+  title: "string",
+  author: "string",
+  canBeDownloaded: true,
+  minAgeRestriction: null,
+  createdAt: new Date().toISOString(),
+  publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+  availableResolutions: ["P144"]
+}
+]
 const permissionVariants = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
 
 const parserMiddleware = bodyParser({})
@@ -37,19 +47,9 @@ app.post('/videos', (req: Request, res: Response) => {
   const title = req.body.title;
   const author = req.body.author;
   const permission = req.body.availableResolutions;
-  const newVideo = {
-    id: +(new Date()),
-    title: title,
-    author: author,
-    canBeDownloaded: true,
-    minAgeRestriction: null,
-    createdAt: new Date().toISOString(),
-    publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
-    availableResolutions: permission
-  };
   let permissionV = permissionVariants.find(p => p === permission)
   
-  if (!title || typeof title !== 'string' || title.length > 40) {
+  if (!title || typeof title !== 'string' || title.length > 40 || !title.trim()) {
     res.status(400).send({
       errorsMessages: [{
           "message": 'maxLength: 40',
@@ -67,31 +67,41 @@ app.post('/videos', (req: Request, res: Response) => {
       ]
     })
     return;
-  }  
+  }
+  const newVideo = {
+    id: +(new Date()),
+    title: title,
+    author: author,
+    canBeDownloaded: true,
+    minAgeRestriction: null,
+    createdAt: new Date().toISOString(),
+    publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
+    availableResolutions: permission
+  }; 
   videos.push(newVideo)
   res.status(201).send(newVideo)
 })
 
 app.put('/videos/:id', (req: Request, res: Response) => {
-  const permissionV = permissionVariants.find(p => p === req.body.availableResolution)
-  const video = videos.find(p => p.id === +req.params.id)
-  if (video) {
-    video.title = req.body.title,
-    video.author = req.body.author,
-    video.availableResolutions = req.body.availableResolutions,
-    video.canBeDownloaded = req.body.canBeDownloaded,
-    video.minAgeRestriction = req.body.minAgeRestriction
-    video.publicationDate = new Date().toISOString();
-    if (video.title.length > 40) {
-      res.status(400).send({
-      "errorsMessages": [
-        {
-    title: video.title,
-          "message": 'maxLength: 40',
-          "field": video.title
-        }
-      ]
+  const id = +req.params.id;
+  let video = videos.find(p => p.id === id);
+  if (!video) {
+    res.send(404)
+  };
+  const title = req.body.title;
+  const author = req.body.author;
+  const availableResolutions = req.body.availableResolutions;
+  const canBeDownloaded = req.body.canBeDownloaded;
+  const minAgeRestriction = req.body.minAgeRestriction;
+  const publicationDate = new Date().toISOString();
+  if (!title || typeof title !== 'string' || title.length > 40 || !title.trim()) {
+    res.status(400).send({
+      errorsMessages: [{
+          "message": '',
+          "field": "title"
+        }]
     })
+    return;
   } else if (video.author.length > 20) {
     res.status(400).send({
       "errorsMessages": [
@@ -101,7 +111,8 @@ app.put('/videos/:id', (req: Request, res: Response) => {
         }
       ]
     })
-  } else if (video.minAgeRestriction > 18 ||video.minAgeRestriction < 1 ) {
+    return;
+  } else if (video.minAgeRestriction > 18 || video.minAgeRestriction < 1 ) {
     res.status(400).send({
       "errorsMessages": [
         {
@@ -110,20 +121,9 @@ app.put('/videos/:id', (req: Request, res: Response) => {
         }
       ]
     })
-  } else if (!permissionV) {
-    res.status(400).send({
-      "errorsMessages": [
-        {
-          "message": "",
-          "field": video.availableResolutions
-        }
-      ]
-    })
+    return;
   } else {
-    res.status(204).send(video)
-  }}
-   else {
-    res.send(404)
+    res.status(204)
   }
 })
 
