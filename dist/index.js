@@ -11,8 +11,8 @@ const videos = [{
         id: +(new Date()),
         title: "string",
         author: "string",
-        canBeDownloaded: true,
-        minAgeRestriction: null,
+        canBeDownloaded: false,
+        minAgeRestriction: 16,
         createdAt: new Date().toISOString(),
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: ["P144"]
@@ -20,8 +20,8 @@ const videos = [{
         id: +(new Date()),
         title: "string",
         author: "string",
-        canBeDownloaded: true,
-        minAgeRestriction: null,
+        canBeDownloaded: false,
+        minAgeRestriction: 15,
         createdAt: new Date().toISOString(),
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: ["P144"]
@@ -70,8 +70,8 @@ app.post('/videos', (req, res) => {
         id: +(new Date()),
         title: title,
         author: author,
-        canBeDownloaded: true,
-        minAgeRestriction: null,
+        canBeDownloaded: false,
+        minAgeRestriction: 12,
         createdAt: new Date().toISOString(),
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: permission
@@ -96,7 +96,7 @@ app.put('/videos/:id', (req, res) => {
         res.status(400).send({
             errorsMessages: [{
                     "message": '',
-                    "field": "title"
+                    "field": title
                 }]
         });
         return;
