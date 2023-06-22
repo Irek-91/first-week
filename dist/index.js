@@ -47,31 +47,28 @@ app.post('/videos', (req, res) => {
         availableResolutions: permission
     };
     let permissionV = permissionVariants.find(p => p === permission);
-    if (title.length > 40) {
+    if (!title || typeof title !== 'string' || title.length > 40) {
         res.status(400).send({
-            "errorsMessages": [
-                {
-                    title: title,
+            errorsMessages: [{
                     "message": 'maxLength: 40',
                     "field": title
                 }
             ]
         });
+        return;
     }
-    else if (author.length > 20) {
+    if (author.length > 20) {
         res.status(400).send({
-            "errorsMessages": [
-                {
+            errorsMessages: [{
                     "message": "maxLength: 20",
                     "field": author
                 }
             ]
         });
+        return;
     }
-    else {
-        videos.push(newVideo);
-        res.status(201).send(newVideo);
-    }
+    videos.push(newVideo);
+    res.status(201).send(newVideo);
 });
 app.put('/videos/:id', (req, res) => {
     const permissionV = permissionVariants.find(p => p === req.body.availableResolution);

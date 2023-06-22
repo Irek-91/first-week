@@ -34,9 +34,9 @@ app.get('/videos/:id', (req: Request, res: Response) => {
 })
 
 app.post('/videos', (req: Request, res: Response) => {
-  const title = req.body.title
-  const author = req.body.author
-  const permission = req.body.availableResolutions
+  const title = req.body.title;
+  const author = req.body.author;
+  const permission = req.body.availableResolutions;
   const newVideo = {
     id: +(new Date()),
     title: title,
@@ -49,29 +49,28 @@ app.post('/videos', (req: Request, res: Response) => {
   };
   let permissionV = permissionVariants.find(p => p === permission)
   
-  if (title.length > 40) {
+  if (!title || typeof title !== 'string' || title.length > 40) {
     res.status(400).send({
-      "errorsMessages": [
-        {
-    title: title,
+      errorsMessages: [{
           "message": 'maxLength: 40',
           "field": title
         }
       ]
     })
+    return;
   }
-  else if (author.length > 20) {
+  if (author.length > 20) {
     res.status(400).send({
-      "errorsMessages": [
-        {
+      errorsMessages: [{
           "message": "maxLength: 20",
           "field": author
         }
       ]
     })
+    return;
   }  
-  else {videos.push(newVideo)
-    res.status(201).send(newVideo)}
+  videos.push(newVideo)
+  res.status(201).send(newVideo)
 })
 
 app.put('/videos/:id', (req: Request, res: Response) => {
