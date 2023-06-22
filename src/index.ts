@@ -9,7 +9,7 @@ const videos = [{
   title: "string",
   author: "string",
   canBeDownloaded: false,
-  minAgeRestriction: 16,
+  minAgeRestriction: null,
   createdAt: new Date().toISOString(),
   publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
   availableResolutions: ["P144"]
@@ -18,7 +18,7 @@ const videos = [{
   title: "string",
   author: "string",
   canBeDownloaded: false,
-  minAgeRestriction: 15,
+  minAgeRestriction: null,
   createdAt: new Date().toISOString(),
   publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
   availableResolutions: ["P144"]
