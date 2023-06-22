@@ -14,7 +14,7 @@ const videos = [{
         canBeDownloaded: true,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: ["P144"]
     }];
 const permissionVariants = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'];
@@ -43,7 +43,7 @@ app.post('/videos', (req, res) => {
         canBeDownloaded: true,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: permission
     };
     let permissionV = permissionVariants.find(p => p === permission);
