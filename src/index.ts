@@ -48,16 +48,7 @@ app.post('/videos', (req: Request, res: Response) => {
     availableResolutions: permission
   };
   let permissionV = permissionVariants.find(p => p === permission)
-  if (!permissionV) {
-    res.status(400).send({
-      "errorsMessages": [
-        {
-          "message": "",
-          "field": permission
-        }
-      ]
-    })
-  }
+  
   if (title.length > 40) {
     res.status(400).send({
       "errorsMessages": [
@@ -131,7 +122,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
       ]
     })
   } else {
-    res.send(video)
+    res.status(204).send(video)
   }}
    else {
     res.send(404)
