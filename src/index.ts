@@ -27,7 +27,7 @@ app.get('/videos', (req: Request, res: Response) => {
 app.get('/videos/:id', (req: Request, res: Response) => {
   let video = videos.find(p => p.id === +req.params.id)
   if (video) {
-    res.send(video)
+    res.status(200).send(video)
   } else {
     res.send(404)
   }
@@ -53,9 +53,8 @@ app.post('/videos', (req: Request, res: Response) => {
     res.status(400).send({
       errorsMessages: [{
           "message": 'maxLength: 40',
-          "field": title
-        }
-      ]
+          "field": "title"
+        }]
     })
     return;
   }
