@@ -2,11 +2,11 @@
     "version": 2,
     "name": "first-week",
     "builds": [
-       { "src": "src/index.js", 
+       { "src": "src/index.ts", 
         "use": "@vercel/node" }
     ],
     "routes": [
        { "src": "/(.*)", 
-       "dest": "src/index.js" }
+       "dest": "src/index.ts" }
     ]
  }
