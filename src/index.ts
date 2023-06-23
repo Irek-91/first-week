@@ -145,6 +145,11 @@ app.delete('/videos/:id', (req: Request, res: Response) => {
   }
   res.send(404)
 })
+app.delete('/videos', (req: Request, res: Response) => {
+    videos.splice(-1, 0);
+      res.send(204)
+      return;
+})
 
 
 

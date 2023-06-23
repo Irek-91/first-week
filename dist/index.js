@@ -143,6 +143,11 @@ app.delete('/videos/:id', (req, res) => {
     }
     res.send(404);
 });
+app.delete('/videos', (req, res) => {
+    videos.splice(-1, 0);
+    res.send(204);
+    return;
+});
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
