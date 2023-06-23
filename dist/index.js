@@ -90,6 +90,7 @@ app.post('/videos', (req, res) => {
 });
 app.put('/videos/:id', (req, res) => {
     const id = +req.params.id;
+    let apiErrorResult = [];
     let video = videos.find(p => p.id === id);
     if (!video) {
         res.send(404);
@@ -101,36 +102,32 @@ app.put('/videos/:id', (req, res) => {
     const canBeDownloaded = req.body.canBeDownloaded;
     const minAgeRestriction = req.body.minAgeRestriction;
     const publicationDate = new Date().toISOString();
-    if (!title || typeof title !== 'string' || title.length > 40 || !title.trim()) {
-        res.status(400).send({
-            errorsMessages: [{
-                    "message": '',
-                    "field": title
+    if (!title || typeof title !== 'string' || !title.trim()) {
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string',
+                    "field": "title"
                 }]
         });
         return;
     }
-    else if (video.author.length > 20) {
-        res.status(400).send({
-            "errorsMessages": [
-                {
-                    "message": "maxLength: 20",
-                    "field": video.author
-                }
-            ]
+    if (video.author.length > 20) {
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string > 20',
+                    "field": "author"
+                }]
         });
         return;
     }
-    else if (video.minAgeRestriction > 18 || video.minAgeRestriction < 1) {
-        res.status(400).send({
-            "errorsMessages": [
-                {
-                    "message": "maximum: 18, minimum: 1",
-                    "field": video.minAgeRestriction
-                }
-            ]
+    if (video.minAgeRestriction > 18 || video.minAgeRestriction < 1 || typeof video.minAgeRestriction !== null) {
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string',
+                    "field": "minAgeRestriction"
+                }]
         });
         return;
+    }
+    if (apiErrorResult.length > 0) {
+        res.status(400).send(apiErrorResult);
     }
     else {
         res.status(204);
