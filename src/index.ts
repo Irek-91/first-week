@@ -51,39 +51,35 @@ app.post('/videos', (req: Request, res: Response) => {
   let permissionV = permissionVariants.find(p => p === permission)
   
   if (!title || typeof title !== 'string' || !title.trim()) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string',
           "field": "title"}]
-      })
+      )
     return;
   }
   if (typeof title === null) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string',
           "field": "title"}]
-      })
+      )
     return;
   }
   if (title.length >40) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string',
           "field": "title"}]
-      })
+      )
     return;
   }
   if (author.length > 20) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string',
           "field": "author"}]
-      })
+      )
     return;
   }
   if (apiErrorResult.length > 0) {
-    res.status(400).send(apiErrorResult)
+    res.status(400).send({errorsMessages: apiErrorResult})
     return;
   }
   const newVideo = {
@@ -106,6 +102,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   let video = videos.find(p => p.id === id);
   if (!video) {
     res.send(404)
+    return;
   };
   const title = req.body.title;
   const author = req.body.author;
@@ -114,31 +111,28 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   const minAgeRestriction = req.body.minAgeRestriction;
   const publicationDate = new Date().toISOString();
   if (!title || typeof title !== 'string' || !title.trim()) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string',
           "field": "title"}]
-      })
+      )
     return;
   } 
   if (video.author.length > 20) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string > 20',
           "field": "author"}]
-      })
+      )
     return;
   } 
   if (video.minAgeRestriction > 18 || video.minAgeRestriction < 1 || typeof video.minAgeRestriction !== null ) {
-    apiErrorResult.push(
-      {errorsMessages: [{
+    apiErrorResult.push([{
           "message": 'string',
           "field": "minAgeRestriction"}]
-      })
+      )
     return;
   } 
   if (apiErrorResult.length > 0) {
-    res.status(400).send(apiErrorResult)
+    res.status(400).send({errorsMessages: apiErrorResult})
   } else {
    res.status(204)
 }
