@@ -56,6 +56,14 @@ app.post('/videos', (req, res) => {
         });
         return;
     }
+    if (typeof title === null) {
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string',
+                    "field": "title"
+                }]
+        });
+        return;
+    }
     if (title.length > 40) {
         apiErrorResult.push({ errorsMessages: [{
                     "message": 'string',
@@ -74,6 +82,7 @@ app.post('/videos', (req, res) => {
     }
     if (apiErrorResult.length > 0) {
         res.status(400).send(apiErrorResult);
+        return;
     }
     const newVideo = {
         id: +(new Date()),
