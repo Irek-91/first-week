@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const port = 3000;
-const videos = [{
+let videos = [{
         id: 1,
         title: "string",
         author: "string",
@@ -145,8 +145,7 @@ app.delete('/videos/:id', (req, res) => {
 });
 app.delete('/videos', (req, res) => {
     videos.splice(-1, 0);
-    res.send(204);
-    return;
+    res.status(204);
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

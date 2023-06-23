@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 
-const videos = [{
+let videos = [{
   id: 1,
   title: "string",
   author: "string",
@@ -147,8 +147,7 @@ app.delete('/videos/:id', (req: Request, res: Response) => {
 })
 app.delete('/videos', (req: Request, res: Response) => {
     videos.splice(-1, 0);
-      res.send(204)
-      return;
+      res.status(204)
 })
 
 
