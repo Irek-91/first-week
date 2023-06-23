@@ -130,9 +130,17 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "field": "minAgeRestriction"}]
       )
     return;
+  }
+  if (canBeDownloaded !== 'true' || canBeDownloaded !== 'false') {
+    apiErrorResult.push([{
+          "message": 'canBeDownloaded',
+          "field": "canBeDownloaded"}]
+      )
+    return;
   } 
   if (apiErrorResult.length > 0) {
     res.status(400).send({errorsMessages: apiErrorResult})
+    return;
   } else {
    res.status(204)
 }
