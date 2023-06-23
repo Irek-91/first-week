@@ -8,7 +8,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const port = 3000;
 const videos = [{
-        id: +(new Date()),
+        id: 1,
         title: "string",
         author: "string",
         canBeDownloaded: false,
@@ -17,7 +17,7 @@ const videos = [{
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: ["P144"]
     }, {
-        id: +(new Date()),
+        id: 2,
         title: "string",
         author: "string",
         canBeDownloaded: false,
@@ -46,32 +46,41 @@ app.post('/videos', (req, res) => {
     const title = req.body.title;
     const author = req.body.author;
     const permission = req.body.availableResolutions;
+    let apiErrorResult = [];
     let permissionV = permissionVariants.find(p => p === permission);
-    if (!title || typeof title !== 'string' || title.length > 40 || !title.trim()) {
-        res.status(400).send({
-            errorsMessages: [{
-                    "message": 'maxLength: 40',
+    if (!title || typeof title !== 'string' || !title.trim()) {
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string',
+                    "field": "title"
+                }]
+        });
+        return;
+    }
+    if (title.length > 40) {
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string',
                     "field": "title"
                 }]
         });
         return;
     }
     if (author.length > 20) {
-        res.status(400).send({
-            errorsMessages: [{
-                    "message": "maxLength: 20",
-                    "field": author
-                }
-            ]
+        apiErrorResult.push({ errorsMessages: [{
+                    "message": 'string',
+                    "field": "author"
+                }]
         });
         return;
+    }
+    if (apiErrorResult.length > 0) {
+        res.status(400).send(apiErrorResult);
     }
     const newVideo = {
         id: +(new Date()),
         title: title,
         author: author,
         canBeDownloaded: false,
-        minAgeRestriction: 12,
+        minAgeRestriction: null,
         createdAt: new Date().toISOString(),
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: permission
