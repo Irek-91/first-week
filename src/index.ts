@@ -39,7 +39,7 @@ app.get('/videos/:id', (req: Request, res: Response) => {
   if (video) {
     res.status(200).send(video)
   } else {
-    res.send(404)
+    res.sendStatus(404)
   }
 })
 
@@ -50,38 +50,26 @@ app.post('/videos', (req: Request, res: Response) => {
   let apiErrorResult =[];
   let permissionV = permissionVariants.find(p => p === permission)
   
-  if (!title || typeof title !== 'string' || !title.trim()) {
-    apiErrorResult.push([{
+  if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+    apiErrorResult.push({
           "message": 'string',
-          "field": "title"}]
+          "field": "title"}
+      )
+  }
+
+  if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+    apiErrorResult.push({
+          "message": 'string',
+          "field": "author"}
       )
     return;
   }
-  if (typeof title === null) {
-    apiErrorResult.push([{
-          "message": 'string',
-          "field": "title"}]
-      )
-    return;
-  }
-  if (title.length >40) {
-    apiErrorResult.push([{
-          "message": 'string',
-          "field": "title"}]
-      )
-    return;
-  }
-  if (author.length > 20) {
-    apiErrorResult.push([{
-          "message": 'string',
-          "field": "author"}]
-      )
-    return;
-  }
+  
   if (apiErrorResult.length > 0) {
     res.status(400).send({errorsMessages: apiErrorResult})
     return;
   }
+
   const newVideo = {
     id: +(new Date()),
     title: title,
@@ -92,52 +80,59 @@ app.post('/videos', (req: Request, res: Response) => {
     publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
     availableResolutions: permission
   }; 
+
   videos.push(newVideo)
   res.status(201).send(newVideo)
 })
 
 app.put('/videos/:id', (req: Request, res: Response) => {
   const id = +req.params.id;
-  let apiErrorResult =[];
+  let apiErrorResult = [];
+
   let video = videos.find(p => p.id === id);
+
   if (!video) {
-    res.send(404)
+    res.sendStatus(404)
     return;
   };
+
   const title = req.body.title;
   const author = req.body.author;
   const availableResolutions = req.body.availableResolutions;
   const canBeDownloaded = req.body.canBeDownloaded;
   const minAgeRestriction = req.body.minAgeRestriction;
   const publicationDate = new Date().toISOString();
-  if (!title || typeof title !== 'string' || !title.trim()) {
-    apiErrorResult.push([{
+
+  if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+    apiErrorResult.push({
           "message": 'string',
-          "field": "title"}]
-      )
-    return;
-  } 
-  if (video.author.length > 20) {
-    apiErrorResult.push([{
-          "message": 'string > 20',
-          "field": "author"}]
-      )
-    return;
-  } 
-  if (video.minAgeRestriction > 18 || video.minAgeRestriction < 1 || typeof video.minAgeRestriction !== null ) {
-    apiErrorResult.push([{
-          "message": 'string',
-          "field": "minAgeRestriction"}]
+          "field": "title"}
       )
     return;
   }
-  if (canBeDownloaded !== 'true' || canBeDownloaded !== 'false') {
-    apiErrorResult.push([{
-          "message": 'canBeDownloaded',
-          "field": "canBeDownloaded"}]
+
+  if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+    apiErrorResult.push({
+          "message": 'string > 20',
+          "field": "author"}
       )
     return;
   } 
+
+  if (typeof minAgeRestriction !== null || minAgeRestriction > 18 || minAgeRestriction < 1 ) {
+    apiErrorResult.push({
+          "message": 'string',
+          "field": "minAgeRestriction"}
+      )
+  }
+
+  if (typeof canBeDownloaded !== undefined && typeof canBeDownloaded !== 'boolean') {
+    apiErrorResult.push({
+          "message": 'canBeDownloaded',
+          "field": "canBeDownloaded"}
+      )
+  } 
+
   if (apiErrorResult.length > 0) {
     res.status(400).send({errorsMessages: apiErrorResult})
     return;
@@ -150,13 +145,13 @@ app.delete('/videos/:id', (req: Request, res: Response) => {
   for (let i=0; i<videos.length; i++) {
     if (videos[i].id === + req.params.id) {
       videos.splice(i, 1);
-      res.send(204)
+      res.sendStatus(204)
       return;
     }
   }
-  res.send(404)
+  res.sendStatus(404)
 })
-app.delete('/videos', (req: Request, res: Response) => {
+app.delete('/testing/all-data', (req: Request, res: Response) => {
     videos.splice(-1, 0);
       res.status(204)
 })

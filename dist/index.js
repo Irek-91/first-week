@@ -39,7 +39,7 @@ app.get('/videos/:id', (req, res) => {
         res.status(200).send(video);
     }
     else {
-        res.send(404);
+        res.sendStatus(404);
     }
 });
 app.post('/videos', (req, res) => {
@@ -48,32 +48,17 @@ app.post('/videos', (req, res) => {
     const permission = req.body.availableResolutions;
     let apiErrorResult = [];
     let permissionV = permissionVariants.find(p => p === permission);
-    if (!title || typeof title !== 'string' || !title.trim()) {
-        apiErrorResult.push([{
-                "message": 'string',
-                "field": "title"
-            }]);
-        return;
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+        apiErrorResult.push({
+            "message": 'string',
+            "field": "title"
+        });
     }
-    if (typeof title === null) {
-        apiErrorResult.push([{
-                "message": 'string',
-                "field": "title"
-            }]);
-        return;
-    }
-    if (title.length > 40) {
-        apiErrorResult.push([{
-                "message": 'string',
-                "field": "title"
-            }]);
-        return;
-    }
-    if (author.length > 20) {
-        apiErrorResult.push([{
-                "message": 'string',
-                "field": "author"
-            }]);
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+        apiErrorResult.push({
+            "message": 'string',
+            "field": "author"
+        });
         return;
     }
     if (apiErrorResult.length > 0) {
@@ -98,7 +83,7 @@ app.put('/videos/:id', (req, res) => {
     let apiErrorResult = [];
     let video = videos.find(p => p.id === id);
     if (!video) {
-        res.send(404);
+        res.sendStatus(404);
         return;
     }
     ;
@@ -108,33 +93,31 @@ app.put('/videos/:id', (req, res) => {
     const canBeDownloaded = req.body.canBeDownloaded;
     const minAgeRestriction = req.body.minAgeRestriction;
     const publicationDate = new Date().toISOString();
-    if (!title || typeof title !== 'string' || !title.trim()) {
-        apiErrorResult.push([{
-                "message": 'string',
-                "field": "title"
-            }]);
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+        apiErrorResult.push({
+            "message": 'string',
+            "field": "title"
+        });
         return;
     }
-    if (video.author.length > 20) {
-        apiErrorResult.push([{
-                "message": 'string > 20',
-                "field": "author"
-            }]);
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+        apiErrorResult.push({
+            "message": 'string > 20',
+            "field": "author"
+        });
         return;
     }
-    if (video.minAgeRestriction > 18 || video.minAgeRestriction < 1 || typeof video.minAgeRestriction !== null) {
-        apiErrorResult.push([{
-                "message": 'string',
-                "field": "minAgeRestriction"
-            }]);
-        return;
+    if (typeof minAgeRestriction !== null || minAgeRestriction > 18 || minAgeRestriction < 1) {
+        apiErrorResult.push({
+            "message": 'string',
+            "field": "minAgeRestriction"
+        });
     }
-    if (canBeDownloaded !== 'true' || canBeDownloaded !== 'false') {
-        apiErrorResult.push([{
-                "message": 'canBeDownloaded',
-                "field": "canBeDownloaded"
-            }]);
-        return;
+    if (typeof canBeDownloaded !== undefined && typeof canBeDownloaded !== 'boolean') {
+        apiErrorResult.push({
+            "message": 'canBeDownloaded',
+            "field": "canBeDownloaded"
+        });
     }
     if (apiErrorResult.length > 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });
@@ -148,13 +131,13 @@ app.delete('/videos/:id', (req, res) => {
     for (let i = 0; i < videos.length; i++) {
         if (videos[i].id === +req.params.id) {
             videos.splice(i, 1);
-            res.send(204);
+            res.sendStatus(204);
             return;
         }
     }
-    res.send(404);
+    res.sendStatus(404);
 });
-app.delete('/videos', (req, res) => {
+app.delete('/testing/all-data', (req, res) => {
     videos.splice(-1, 0);
     res.status(204);
 });
