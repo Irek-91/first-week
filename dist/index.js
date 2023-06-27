@@ -7,8 +7,8 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 const port = 3000;
-let videos = [{
-        id: 1,
+let videos = [
+    { id: 1,
         title: "string",
         author: "string",
         canBeDownloaded: false,
@@ -16,8 +16,8 @@ let videos = [{
         createdAt: new Date().toISOString(),
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
         availableResolutions: ["P144"]
-    }, {
-        id: 2,
+    },
+    { id: 2,
         title: "string",
         author: "string",
         canBeDownloaded: false,
@@ -95,30 +95,35 @@ app.put('/videos/:id', (req, res) => {
             "message": 'string',
             "field": "title"
         });
+        return;
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         apiErrorResult.push({
             "message": 'string > 20',
             "field": "author"
         });
+        return;
     }
     if (minAgeRestriction > 18 || minAgeRestriction < 1) {
         apiErrorResult.push({
             "message": 'string',
             "field": "minAgeRestriction"
         });
+        return;
     }
     if (typeof canBeDownloaded !== undefined && typeof canBeDownloaded !== 'boolean') {
         apiErrorResult.push({
             "message": 'canBeDownloaded',
             "field": "canBeDownloaded"
         });
+        return;
     }
     if (typeof publicationDate !== "string") {
         apiErrorResult.push({
             "message": 'publicationDate',
             "field": "publicationDate"
         });
+        return;
     }
     if (apiErrorResult.length !== 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });

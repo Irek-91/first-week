@@ -4,8 +4,8 @@ const app = express()
 const port = 3000
 
 
-let videos = [{
-  id: 1,
+let videos = [
+  {id: 1,
   title: "string",
   author: "string",
   canBeDownloaded: false,
@@ -13,8 +13,8 @@ let videos = [{
   createdAt: new Date().toISOString(),
   publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
   availableResolutions: ["P144"]
-}, {
-  id: 2,
+  }, 
+  {id: 2,
   title: "string",
   author: "string",
   canBeDownloaded: false,
@@ -22,7 +22,7 @@ let videos = [{
   createdAt: new Date().toISOString(),
   publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
   availableResolutions: ["P144"]
-}
+  }
 ]
 const enum permissionVariants {'P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'}
 
@@ -106,6 +106,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "message": 'string',
           "field": "title"}
       )
+      return;
   }
 
   if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
@@ -113,6 +114,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "message": 'string > 20',
           "field": "author"}
       )
+      return;
   } 
 
   if (minAgeRestriction > 18 || minAgeRestriction < 1 ) {
@@ -120,6 +122,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "message": 'string',
           "field": "minAgeRestriction"}
       )
+      return;
   }
 
   if (typeof canBeDownloaded !== undefined && typeof canBeDownloaded !== 'boolean') {
@@ -127,12 +130,14 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "message": 'canBeDownloaded',
           "field": "canBeDownloaded"}
       )
+      return;
   }
   if (typeof publicationDate !== "string") {
     apiErrorResult.push({
           "message": 'publicationDate',
           "field": "publicationDate"}
       )
+      return;
   } 
 
   if (apiErrorResult.length !== 0) {
