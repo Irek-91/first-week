@@ -118,7 +118,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
     return;
   } 
 
-  if (typeof minAgeRestriction !== null || minAgeRestriction > 18 || minAgeRestriction < 1 ) {
+  if (minAgeRestriction > 18 || minAgeRestriction < 1 ) {
     apiErrorResult.push({
           "message": 'string',
           "field": "minAgeRestriction"}
