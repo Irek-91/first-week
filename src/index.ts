@@ -69,8 +69,8 @@ app.post('/videos', (req: Request, res: Response) => {
         "message": 'availableResolutions',
         "field": "availableResolutions"}
       )
-    }
     return;
+    }
   } 
 
   
@@ -156,8 +156,8 @@ app.put('/videos/:id', (req: Request, res: Response) => {
         "message": 'availableResolutions',
         "field": "availableResolutions"}
     )
-    }
     return;
+    }
   }
 
 if (apiErrorResult.length > 0) {
