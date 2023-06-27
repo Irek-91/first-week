@@ -59,6 +59,14 @@ app.post('/videos', (req, res) => {
             "field": "author"
         });
     }
+    for (let i = 0; i < permission.length; i++) {
+        if (permissionVariants.includes(permission[i]) === false) {
+            apiErrorResult.push({
+                "message": 'availableResolutions',
+                "field": "availableResolutions"
+            });
+        }
+    }
     if (apiErrorResult.length !== 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });
         return;
