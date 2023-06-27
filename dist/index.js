@@ -59,9 +59,8 @@ app.post('/videos', (req, res) => {
             "message": 'string',
             "field": "author"
         });
-        return;
     }
-    if (apiErrorResult.length > 0) {
+    if (apiErrorResult.length !== 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });
         return;
     }
@@ -119,12 +118,11 @@ app.put('/videos/:id', (req, res) => {
             "field": "canBeDownloaded"
         });
     }
-    if (apiErrorResult.length > 0) {
+    if (apiErrorResult.length !== 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });
-        return;
     }
     else {
-        res.status(204);
+        res.sendStatus(204);
     }
 });
 app.delete('/videos/:id', (req, res) => {
@@ -139,7 +137,7 @@ app.delete('/videos/:id', (req, res) => {
 });
 app.delete('/testing/all-data', (req, res) => {
     videos.splice(-1, 0);
-    res.status(204);
+    res.sendStatus(204);
 });
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
