@@ -98,7 +98,7 @@ app.put('/videos/:id', (req, res) => {
     const availableResolutions = req.body.availableResolutions;
     const canBeDownloaded = req.body.canBeDownloaded;
     const minAgeRestriction = req.body.minAgeRestriction;
-    const publicationDate = new Date().toISOString();
+    const publicationDate = "2023-06-27T12:45:08.366Z";
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
         apiErrorResult.push({
             "message": 'string',

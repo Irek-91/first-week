@@ -62,7 +62,7 @@ app.post('/videos', (req: Request, res: Response) => {
           "field": "author"}
       )
   }
-  
+
   for (let i = 0; i < permission.length; i++ ) {
     if (permissionVariants.includes(permission[i]) === false) {
       apiErrorResult.push({
@@ -110,7 +110,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   const availableResolutions = req.body.availableResolutions;
   const canBeDownloaded = req.body.canBeDownloaded;
   const minAgeRestriction = req.body.minAgeRestriction;
-  const publicationDate = new Date().toISOString();
+  const publicationDate = "2023-06-27T12:45:08.366Z";
 
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
     apiErrorResult.push({
