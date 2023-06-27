@@ -37,7 +37,7 @@ app.get('/videos', (req: Request, res: Response) => {
 app.get('/videos/:id', (req: Request, res: Response) => {
   let video = videos.find(p => p.id === +req.params.id)
   if (video) {
-    res.status(200).send(video)
+    res.sendStatus(200).send(video)
   } else {
     res.sendStatus(404)
   }
@@ -46,7 +46,7 @@ app.get('/videos/:id', (req: Request, res: Response) => {
 app.post('/videos', (req: Request, res: Response) => {
   const title = req.body.title;
   const author = req.body.author;
-  const permission = req.body.availableResolutions;
+  const availableResolutions = req.body.availableResolutions;
   let apiErrorResult =[];
   
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
@@ -63,8 +63,8 @@ app.post('/videos', (req: Request, res: Response) => {
       )
   }
 
-  for (let i = 0; i < permission.length; i++ ) {
-    if (permissionVariants.includes(permission[i]) === false) {
+  for (let i = 0; i < availableResolutions.length; i++ ) {
+    if (permissionVariants.includes(availableResolutions[i]) === false) {
       apiErrorResult.push({
         "message": 'availableResolutions',
         "field": "availableResolutions"}
@@ -87,7 +87,7 @@ app.post('/videos', (req: Request, res: Response) => {
     minAgeRestriction: null,
     createdAt: new Date().toISOString(),
     publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
-    availableResolutions: permission
+    availableResolutions: availableResolutions
   };
 
   videos.push(newVideo)
@@ -161,7 +161,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
 if (apiErrorResult.length > 0) {
     res.sendStatus(400).send({errorsMessages: apiErrorResult})
   } else {
-  video.title = title,
+  video.title = title;
   video.author = author,
   video.canBeDownloaded = canBeDownloaded,
   video.availableResolutions = availableResolutions,

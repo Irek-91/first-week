@@ -36,7 +36,7 @@ app.get('/videos', (req, res) => {
 app.get('/videos/:id', (req, res) => {
     let video = videos.find(p => p.id === +req.params.id);
     if (video) {
-        res.status(200).send(video);
+        res.sendStatus(200).send(video);
     }
     else {
         res.sendStatus(404);
@@ -45,7 +45,7 @@ app.get('/videos/:id', (req, res) => {
 app.post('/videos', (req, res) => {
     const title = req.body.title;
     const author = req.body.author;
-    const permission = req.body.availableResolutions;
+    const availableResolutions = req.body.availableResolutions;
     let apiErrorResult = [];
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
         apiErrorResult.push({
@@ -59,8 +59,8 @@ app.post('/videos', (req, res) => {
             "field": "author"
         });
     }
-    for (let i = 0; i < permission.length; i++) {
-        if (permissionVariants.includes(permission[i]) === false) {
+    for (let i = 0; i < availableResolutions.length; i++) {
+        if (permissionVariants.includes(availableResolutions[i]) === false) {
             apiErrorResult.push({
                 "message": 'availableResolutions',
                 "field": "availableResolutions"
@@ -79,7 +79,7 @@ app.post('/videos', (req, res) => {
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
         publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
-        availableResolutions: permission
+        availableResolutions: availableResolutions
     };
     videos.push(newVideo);
     res.status(201).send(newVideo);
@@ -143,8 +143,8 @@ app.put('/videos/:id', (req, res) => {
         res.sendStatus(400).send({ errorsMessages: apiErrorResult });
     }
     else {
-        video.title = title,
-            video.author = author,
+        video.title = title;
+        video.author = author,
             video.canBeDownloaded = canBeDownloaded,
             video.availableResolutions = availableResolutions,
             video.minAgeRestriction = minAgeRestriction,
