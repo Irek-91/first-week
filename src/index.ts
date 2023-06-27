@@ -107,7 +107,6 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "message": 'string',
           "field": "title"}
       )
-    return;
   }
 
   if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
@@ -115,7 +114,6 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "message": 'string > 20',
           "field": "author"}
       )
-    return;
   } 
 
   if (minAgeRestriction > 18 || minAgeRestriction < 1 ) {

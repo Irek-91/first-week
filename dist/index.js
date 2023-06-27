@@ -97,14 +97,12 @@ app.put('/videos/:id', (req, res) => {
             "message": 'string',
             "field": "title"
         });
-        return;
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         apiErrorResult.push({
             "message": 'string > 20',
             "field": "author"
         });
-        return;
     }
     if (minAgeRestriction > 18 || minAgeRestriction < 1) {
         apiErrorResult.push({
