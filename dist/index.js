@@ -66,6 +66,7 @@ app.post('/videos', (req, res) => {
                 "field": "availableResolutions"
             });
         }
+        return;
     }
     if (apiErrorResult.length !== 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });
@@ -138,6 +139,7 @@ app.put('/videos/:id', (req, res) => {
                 "field": "availableResolutions"
             });
         }
+        return;
     }
     if (apiErrorResult.length > 0) {
         res.sendStatus(400).send({ errorsMessages: apiErrorResult });
