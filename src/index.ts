@@ -24,7 +24,7 @@ let videos = [{
   availableResolutions: ["P144"]
 }
 ]
-const permissionVariants = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
+const enum permissionVariants {'P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'}
 
 const parserMiddleware = bodyParser({})
 app.use(parserMiddleware)
@@ -48,7 +48,6 @@ app.post('/videos', (req: Request, res: Response) => {
   const author = req.body.author;
   const permission = req.body.availableResolutions;
   let apiErrorResult =[];
-  let permissionV = permissionVariants.find(p => p === permission)
   
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
     apiErrorResult.push({
@@ -127,6 +126,12 @@ app.put('/videos/:id', (req: Request, res: Response) => {
     apiErrorResult.push({
           "message": 'canBeDownloaded',
           "field": "canBeDownloaded"}
+      )
+  }
+  if (typeof publicationDate !== "string") {
+    apiErrorResult.push({
+          "message": 'publicationDate',
+          "field": "publicationDate"}
       )
   } 
 

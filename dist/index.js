@@ -27,7 +27,6 @@ let videos = [{
         availableResolutions: ["P144"]
     }
 ];
-const permissionVariants = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'];
 const parserMiddleware = (0, body_parser_1.default)({});
 app.use(parserMiddleware);
 app.get('/videos', (req, res) => {
@@ -47,7 +46,6 @@ app.post('/videos', (req, res) => {
     const author = req.body.author;
     const permission = req.body.availableResolutions;
     let apiErrorResult = [];
-    let permissionV = permissionVariants.find(p => p === permission);
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
         apiErrorResult.push({
             "message": 'string',
@@ -114,6 +112,12 @@ app.put('/videos/:id', (req, res) => {
         apiErrorResult.push({
             "message": 'canBeDownloaded',
             "field": "canBeDownloaded"
+        });
+    }
+    if (typeof publicationDate !== "string") {
+        apiErrorResult.push({
+            "message": 'publicationDate',
+            "field": "publicationDate"
         });
     }
     if (apiErrorResult.length !== 0) {
