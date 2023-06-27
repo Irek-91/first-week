@@ -121,6 +121,14 @@ app.put('/videos/:id', (req, res) => {
             "field": "publicationDate"
         });
     }
+    for (let i = 0; i < availableResolutions.length; i++) {
+        if (permissionVariants.includes(availableResolutions[i]) === false) {
+            apiErrorResult.push({
+                "message": 'availableResolutions',
+                "field": "availableResolutions"
+            });
+        }
+    }
     if (apiErrorResult.length !== 0) {
         res.sendStatus(400).send({ errorsMessages: apiErrorResult });
     }
