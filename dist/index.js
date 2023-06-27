@@ -27,6 +27,7 @@ let videos = [
         availableResolutions: ["P144"]
     }
 ];
+const permissionVariants = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160'];
 const parserMiddleware = (0, body_parser_1.default)({});
 app.use(parserMiddleware);
 app.get('/videos', (req, res) => {
@@ -51,14 +52,12 @@ app.post('/videos', (req, res) => {
             "message": 'string',
             "field": "title"
         });
-        return;
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         apiErrorResult.push({
             "message": 'string',
             "field": "author"
         });
-        return;
     }
     if (apiErrorResult.length !== 0) {
         res.sendStatus(400).send({ errorsMessages: apiErrorResult });
@@ -97,40 +96,41 @@ app.put('/videos/:id', (req, res) => {
             "message": 'string',
             "field": "title"
         });
-        return;
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         apiErrorResult.push({
             "message": 'string > 20',
             "field": "author"
         });
-        return;
     }
     if (minAgeRestriction > 18 || minAgeRestriction < 1) {
         apiErrorResult.push({
             "message": 'string',
             "field": "minAgeRestriction"
         });
-        return;
     }
     if (typeof canBeDownloaded !== undefined && typeof canBeDownloaded !== 'boolean') {
         apiErrorResult.push({
             "message": 'canBeDownloaded',
             "field": "canBeDownloaded"
         });
-        return;
     }
     if (typeof publicationDate !== "string") {
         apiErrorResult.push({
             "message": 'publicationDate',
             "field": "publicationDate"
         });
-        return;
     }
     if (apiErrorResult.length !== 0) {
         res.sendStatus(400).send({ errorsMessages: apiErrorResult });
     }
     else {
+        video.title = title;
+        video.author = author;
+        video.canBeDownloaded = canBeDownloaded;
+        video.availableResolutions = availableResolutions;
+        video.minAgeRestriction = minAgeRestriction;
+        video.publicationDate = publicationDate;
         res.sendStatus(204);
     }
 });
