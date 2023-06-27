@@ -66,7 +66,7 @@ app.post('/videos', (req: Request, res: Response) => {
 
   
   if (apiErrorResult.length !== 0) {
-    res.sendStatus(400).send({errorsMessages: apiErrorResult})
+    res.status(400).send({errorsMessages: apiErrorResult})
     return;
   }
 
@@ -131,6 +131,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
           "field": "canBeDownloaded"}
       )
   }
+
   if (typeof publicationDate !== "string") {
     apiErrorResult.push({
           "message": 'publicationDate',
@@ -141,12 +142,12 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   if (apiErrorResult.length !== 0) {
     res.sendStatus(400).send({errorsMessages: apiErrorResult})
   } else {
-  video.title = title
-  video.author = author
-  video.canBeDownloaded = canBeDownloaded
-  video.availableResolutions = availableResolutions
-  video.minAgeRestriction = minAgeRestriction
-  video.publicationDate = publicationDate
+  video.title = title,
+  video.author = author,
+  video.canBeDownloaded = canBeDownloaded,
+  video.availableResolutions = availableResolutions,
+  video.minAgeRestriction = minAgeRestriction,
+  video.publicationDate = publicationDate,
   res.sendStatus(204)
 }
 })

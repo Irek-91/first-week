@@ -60,7 +60,7 @@ app.post('/videos', (req, res) => {
         });
     }
     if (apiErrorResult.length !== 0) {
-        res.sendStatus(400).send({ errorsMessages: apiErrorResult });
+        res.status(400).send({ errorsMessages: apiErrorResult });
         return;
     }
     const newVideo = {
@@ -125,13 +125,13 @@ app.put('/videos/:id', (req, res) => {
         res.sendStatus(400).send({ errorsMessages: apiErrorResult });
     }
     else {
-        video.title = title;
-        video.author = author;
-        video.canBeDownloaded = canBeDownloaded;
-        video.availableResolutions = availableResolutions;
-        video.minAgeRestriction = minAgeRestriction;
-        video.publicationDate = publicationDate;
-        res.sendStatus(204);
+        video.title = title,
+            video.author = author,
+            video.canBeDownloaded = canBeDownloaded,
+            video.availableResolutions = availableResolutions,
+            video.minAgeRestriction = minAgeRestriction,
+            video.publicationDate = publicationDate,
+            res.sendStatus(204);
     }
 });
 app.delete('/videos/:id', (req, res) => {
