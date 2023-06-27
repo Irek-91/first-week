@@ -98,7 +98,9 @@ app.put('/videos/:id', (req, res) => {
     const availableResolutions = req.body.availableResolutions;
     const canBeDownloaded = req.body.canBeDownloaded;
     const minAgeRestriction = req.body.minAgeRestriction;
-    const publicationDate = new Date().toISOString();
+    const dataPlus = new Date(video.createdAt);
+    const publicationDate = dataPlus.setDate(dataPlus.getDate() + 1);
+    const publicationDateISO = new Date(publicationDate).toISOString();
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
         apiErrorResult.push({
             "message": 'string',
@@ -146,7 +148,7 @@ app.put('/videos/:id', (req, res) => {
             video.canBeDownloaded = canBeDownloaded,
             video.availableResolutions = availableResolutions,
             video.minAgeRestriction = minAgeRestriction,
-            video.publicationDate = publicationDate,
+            video.publicationDate = publicationDateISO,
             res.sendStatus(204);
     }
 });
