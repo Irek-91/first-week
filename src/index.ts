@@ -62,10 +62,9 @@ app.post('/videos', (req: Request, res: Response) => {
           "message": 'string',
           "field": "author"}
       )
-    return;
   }
   
-  if (apiErrorResult.length > 0) {
+  if (apiErrorResult.length !== 0) {
     res.status(400).send({errorsMessages: apiErrorResult})
     return;
   }
@@ -133,11 +132,10 @@ app.put('/videos/:id', (req: Request, res: Response) => {
       )
   } 
 
-  if (apiErrorResult.length > 0) {
+  if (apiErrorResult.length !== 0) {
     res.status(400).send({errorsMessages: apiErrorResult})
-    return;
   } else {
-   res.status(204)
+   res.sendStatus(204)
 }
 })
 
@@ -153,7 +151,7 @@ app.delete('/videos/:id', (req: Request, res: Response) => {
 })
 app.delete('/testing/all-data', (req: Request, res: Response) => {
     videos.splice(-1, 0);
-      res.status(204)
+      res.sendStatus(204)
 })
 
 
