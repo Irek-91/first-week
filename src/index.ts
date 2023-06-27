@@ -110,7 +110,8 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   const availableResolutions = req.body.availableResolutions;
   const canBeDownloaded = req.body.canBeDownloaded;
   const minAgeRestriction = req.body.minAgeRestriction;
-  const publicationDate = "2023-06-27T12:45:08.366Z";
+  const dayPlus = Date.parse(video.createdAt);
+  const publicationDate = new Date(dayPlus*1000 + 24*60*60).toISOString();
 
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
     apiErrorResult.push({
@@ -156,7 +157,7 @@ for (let i = 0; i < availableResolutions.length; i++ ) {
   }
 } 
 
-  if (apiErrorResult.length !== 0) {
+if (apiErrorResult.length > 0) {
     res.sendStatus(400).send({errorsMessages: apiErrorResult})
   } else {
   video.title = title,
