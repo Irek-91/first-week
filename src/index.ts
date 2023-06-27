@@ -66,9 +66,10 @@ app.post('/videos', (req: Request, res: Response) => {
   }
   
   if (apiErrorResult.length !== 0) {
-    res.status(400).send({errorsMessages: apiErrorResult})
+    res.sendStatus(400).send({errorsMessages: apiErrorResult})
     return;
   }
+
 
   const newVideo = {
     id: +(new Date()),
@@ -80,6 +81,7 @@ app.post('/videos', (req: Request, res: Response) => {
     publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
     availableResolutions: permission
   };
+
   videos.push(newVideo)
   res.status(201).send(newVideo)
 })
@@ -142,7 +144,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   } 
 
   if (apiErrorResult.length !== 0) {
-    res.status(400).send({errorsMessages: apiErrorResult})
+    res.sendStatus(400).send({errorsMessages: apiErrorResult})
   } else {
    res.sendStatus(204)
 }

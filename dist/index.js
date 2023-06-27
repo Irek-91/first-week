@@ -61,7 +61,7 @@ app.post('/videos', (req, res) => {
         return;
     }
     if (apiErrorResult.length !== 0) {
-        res.status(400).send({ errorsMessages: apiErrorResult });
+        res.sendStatus(400).send({ errorsMessages: apiErrorResult });
         return;
     }
     const newVideo = {
@@ -128,7 +128,7 @@ app.put('/videos/:id', (req, res) => {
         return;
     }
     if (apiErrorResult.length !== 0) {
-        res.status(400).send({ errorsMessages: apiErrorResult });
+        res.sendStatus(400).send({ errorsMessages: apiErrorResult });
     }
     else {
         res.sendStatus(204);
