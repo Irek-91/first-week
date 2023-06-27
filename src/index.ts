@@ -54,6 +54,7 @@ app.post('/videos', (req: Request, res: Response) => {
           "message": 'string',
           "field": "title"}
       )
+      return;
   }
 
   if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
@@ -61,6 +62,7 @@ app.post('/videos', (req: Request, res: Response) => {
           "message": 'string',
           "field": "author"}
       )
+      return;
   }
   
   if (apiErrorResult.length !== 0) {
@@ -77,8 +79,7 @@ app.post('/videos', (req: Request, res: Response) => {
     createdAt: new Date().toISOString(),
     publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
     availableResolutions: permission
-  }; 
-
+  };
   videos.push(newVideo)
   res.status(201).send(newVideo)
 })

@@ -51,12 +51,14 @@ app.post('/videos', (req, res) => {
             "message": 'string',
             "field": "title"
         });
+        return;
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         apiErrorResult.push({
             "message": 'string',
             "field": "author"
         });
+        return;
     }
     if (apiErrorResult.length !== 0) {
         res.status(400).send({ errorsMessages: apiErrorResult });
