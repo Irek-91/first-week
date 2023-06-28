@@ -105,7 +105,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   const minAgeRestriction = req.body.minAgeRestriction;
   const dataPlus = new Date (video.createdAt);
   const publicationDate = dataPlus.setDate(dataPlus.getDate() + 1);
-  const publicationDateISO = new Date().toISOString();
+  const publicationDateISO = req.body.publicationDate;
 
 
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
