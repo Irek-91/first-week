@@ -38,9 +38,7 @@ app.get('/videos', (req: Request, res: Response) => {
 })
 
 app.get('/videos/:id', (req: Request, res: Response) => {
-  console.log(+req.params.id)
   let video = videos.find(p => p.id === +req.params.id)
-  console.log('VIDEOS',video)
   if (video) {
     res.send(video)
   } else {
@@ -56,30 +54,30 @@ app.post('/videos', (req: Request, res: Response) => {
   
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
     apiErrorResult.push({
-          "message": 'string',
-          "field": "title"}
+          message: 'string',
+          field: "title"}
       )
   }
 
   if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
     apiErrorResult.push({
-          "message": 'string',
-          "field": "author"}
+          message: 'string',
+          field: "author"}
       )
   }
 
   for (let i = 0; i < availableResolutions.length; i++ ) {
     if (permissionVariants.includes(availableResolutions[i]) === false) {
       apiErrorResult.push({
-        "message": 'availableResolutions',
-        "field": "availableResolutions"}
+        message: 'availableResolutions',
+        field: "availableResolutions"}
       )
     }
   } 
 
   
   if (apiErrorResult.length !== 0) {
-    res.status(400).send({errorsMessages: apiErrorResult})
+    res.status(400).send({ errorsMessages: apiErrorResult})
     return;
   }
 
@@ -121,50 +119,50 @@ app.put('/videos/:id', (req: Request, res: Response) => {
 
   if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
     apiErrorResult.push({
-          "message": 'string',
-          "field": "title"}
+          message: 'string',
+          field: "title"}
       )
   }
 
   if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
     apiErrorResult.push({
-          "message": 'string > 20',
-          "field": "author"}
+          message: 'string > 20',
+          field: "author"}
       )
   } 
 
 
   if (minAgeRestriction > 18 || minAgeRestriction < 1 ) {
     apiErrorResult.push({
-          "message": 'string',
-          "field": "minAgeRestriction"}
+          message : 'string',
+          field : "minAgeRestriction"}
       )
   }
 
   if (typeof canBeDownloaded !== undefined && typeof canBeDownloaded !== 'boolean') {
     apiErrorResult.push({
-          "message": 'canBeDownloaded',
-          "field": "canBeDownloaded"}
+          message: 'canBeDownloaded',
+          field: "canBeDownloaded"}
       )
   }
 
   if (typeof publicationDateISO !== "string") {
     apiErrorResult.push({
-          "message": 'publicationDate',
-          "field": "publicationDate"}
+          message: 'publicationDate',
+          field: "publicationDate"}
       )
   } 
   for (let i = 0; i < availableResolutions.length; i++ ) {
     if (permissionVariants.includes(availableResolutions[i]) === false) {
       apiErrorResult.push({
-        "message": 'availableResolutions',
-        "field": "availableResolutions"}
+        message: 'availableResolutions',
+        field: "availableResolutions"}
     )
     }
   }
 
 if (apiErrorResult.length > 0) {
-    res.status(404).send({errorsMessages: apiErrorResult})
+    res.status(404).send({ errorsMessages: apiErrorResult})
   } else {
   video.title = title;
   video.author = author,
