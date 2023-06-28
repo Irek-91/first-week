@@ -1,11 +1,13 @@
 import express, {Request, Response} from 'express'
 import bodyParser from 'body-parser'
+import { Console, log } from 'console'
 const app = express()
 const port = 3000
 
 
 let videos = [
-  {id: 1,
+  {
+    id: 1,
   title: "string",
   author: "string",
   canBeDownloaded: false,
@@ -14,7 +16,8 @@ let videos = [
   publicationDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
   availableResolutions: ["P144"]
   }, 
-  {id: 2,
+  {
+    id: 2,
   title: "string",
   author: "string",
   canBeDownloaded: false,
@@ -35,9 +38,11 @@ app.get('/videos', (req: Request, res: Response) => {
 })
 
 app.get('/videos/:id', (req: Request, res: Response) => {
+  console.log(+req.params.id)
   let video = videos.find(p => p.id === +req.params.id)
+  console.log('VIDEOS',video)
   if (video) {
-    res.sendStatus(200).send(video)
+    res.send(video)
   } else {
     res.sendStatus(404)
   }
@@ -99,10 +104,9 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   let apiErrorResult = [];
 
   let video = videos.find(p => p.id === id);
-
+  
   if (!video) {
     res.sendStatus(404)
-    return;
   };
 
   const title = req.body.title;
@@ -129,6 +133,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
       )
   } 
 
+
   if (minAgeRestriction > 18 || minAgeRestriction < 1 ) {
     apiErrorResult.push({
           "message": 'string',
@@ -143,7 +148,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
       )
   }
 
-  if (typeof publicationDate !== "string") {
+  if (typeof publicationDateISO !== "string") {
     apiErrorResult.push({
           "message": 'publicationDate',
           "field": "publicationDate"}
@@ -159,7 +164,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   }
 
 if (apiErrorResult.length > 0) {
-    res.sendStatus(400).send({errorsMessages: apiErrorResult})
+    res.status(404).send({errorsMessages: apiErrorResult})
   } else {
   video.title = title;
   video.author = author,
