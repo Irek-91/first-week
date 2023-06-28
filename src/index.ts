@@ -135,7 +135,7 @@ app.put('/videos/:id', (req: Request, res: Response) => {
   }
 
 if (apiErrorResult.length > 0) {
-    res.status(404).send({ errorsMessages: apiErrorResult})
+    res.status(400).send({ errorsMessages: apiErrorResult})
   } else {
   video.title = title;
   video.author = author,
